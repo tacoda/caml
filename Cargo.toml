@@ -1,12 +1,12 @@
 [package]
 name = "caml"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Ian Johnson <tacoda@hey.com>"]
 edition = "2018"
 license = "MIT"
 description = "A dynamic CLI tool defined with declarative YAML"
 readme = "README.md"
-homepage = "https://github.com/tacoda/caml"
+homepage = "https://tacoda.dev/caml"
 repository = "https://github.com/tacoda/caml"
 keyworks = ["cli", "yaml", "dynamic"]
 categories = ["command-line-utilities"]
