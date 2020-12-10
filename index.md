@@ -24,7 +24,13 @@ TODO
 ## Standard Usage
 
 ```sh
+# Show the help menu
 caml
+caml --help
+# Show the version
+caml --version
+# Show the help for a subcommand
+caml help [subcommand]
 ```
 
 ## Basic Configuration
@@ -35,7 +41,21 @@ pwd:
   execute: pwd
 ```
 
-This configuration will define a `pwd` command with a help description. It will execute the `pwd` shell command when invoked.
+This configuration will define a `pwd` command with a help description.
+It will execute the `pwd` shell command when invoked.
+In addition, help menus will be generated for you.
+
+```sh
+caml help pwd
+Print the working directory
+
+USAGE:
+    caml pwd
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+```
 
 ## Basic Usage
 
