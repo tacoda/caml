@@ -45,13 +45,23 @@ mkdir caml-crash
 cd caml-crash
 ```
 
-Create a `caml.yaml` file.
+Run the `init` subcommand.
 
 ```sh
-touch caml.yaml
+caml init
 ```
 
+In the current directory, a `caml.yaml` file will be written.
+
 **`caml.yaml`**
+
+```yaml
+hello:
+  desc: Say hello
+  execute: echo "Hello, world!"
+```
+
+---
 
 ```yaml
 pwd:
