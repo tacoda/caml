@@ -1,6 +1,6 @@
 [package]
 name = "caml"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ian Johnson <tacoda@hey.com>"]
 edition = "2018"
 license = "MIT"
@@ -8,12 +8,12 @@ description = "A dynamic CLI tool defined with declarative YAML"
 readme = "README.md"
 homepage = "https://tacoda.dev/caml"
 repository = "https://github.com/tacoda/caml"
-keyworks = ["cli", "yaml", "dynamic"]
+keywords = ["cli", "yaml", "dynamic"]
 categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-structopt = "0.3"
+clap = "2.33"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"

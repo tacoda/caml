@@ -7,12 +7,19 @@ pub fn load() -> Result<Point, serde_yaml::Error> {
     Ok(point)
 }
 
-pub fn init(directory: &Option<PathBuf>) {
-    match directory {
-        Some(dir) => { println!("Init in the {:?} directory.", dir); },
-        None => { println!("Init in the current directory!"); },
-    }
-}
+// pub fn init() {
+//     match directory {
+//         Some(dir) => { println!("Init in the {:?} directory.", dir); },
+//         None => { println!("Init in the current directory!"); },
+//     }
+// }
+
+// pub fn init(directory: &Option<PathBuf>) {
+//     match directory {
+//         Some(dir) => { println!("Init in the {:?} directory.", dir); },
+//         None => { println!("Init in the current directory!"); },
+//     }
+// }
 
 // fn find_config() {
 //     //
