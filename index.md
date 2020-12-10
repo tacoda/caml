@@ -21,13 +21,13 @@ curl -LSfs https://japaric.github.io/trust/install.sh | \
 
 TODO
 
-## Basic Usage
+## Standard Usage
 
 ```sh
 caml
 ```
 
-## Configuration
+## Basic Configuration
 
 ```yaml
 pwd:
@@ -37,10 +37,14 @@ pwd:
 
 This configuration will define a `pwd` command with a help description. It will execute the `pwd` shell command when invoked.
 
-## Defined Usage
+## Basic Usage
 
 TODO
 
-## More About Configuration
+## Advanced Configuration
+
+TODO
+
+## Advanced Usage
 
 TODO
