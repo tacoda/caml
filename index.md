@@ -33,7 +33,23 @@ caml --version
 caml help [subcommand]
 ```
 
-## Basic Configuration
+## Crash Course
+
+Create a new folder.
+
+```sh
+cd $HOME
+mkdir caml-crash
+cd caml-crash
+```
+
+Create a `caml.yaml` file.
+
+```sh
+touch caml.yaml
+```
+
+**`caml.yaml`**
 
 ```yaml
 pwd:
@@ -41,30 +57,43 @@ pwd:
   execute: pwd
 ```
 
-This configuration will define a `pwd` command with a help description.
-It will execute the `pwd` shell command when invoked.
-In addition, help menus will be generated for you.
+Make sure to save the file!
+
+This configuration will define a `pwd` subcommand.
+
+```sh
+caml help
+# ...
+#
+# SUBCOMMANDS:
+#     ...
+#     pwd       Print the working directory
+#     help      Prints this message or the help of the given subcommand(s)
+```
+
+Help will be generated for you.
 
 ```sh
 caml help pwd
-Print the working directory
-
-USAGE:
-    caml pwd
-
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+caml pwd --help
+# Print the working directory
+#
+# USAGE:
+#     caml pwd
+# 
+# FLAGS:
+#     -h, --help       Prints help information
+#     -V, --version    Prints version information
 ```
 
-## Basic Usage
+It will execute the `pwd` shell command when invoked.
 
-TODO
+```sh
+caml pwd
+# $HOME
+```
 
-## Advanced Configuration
 
-TODO
-
-## Advanced Usage
+## Full Configuration Documentation
 
 TODO
