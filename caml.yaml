@@ -1,0 +1,96 @@
+bootstrap:
+  desc: Setup and seed the database. Must be run before starting the app.
+  execute:
+    - docker-compose build
+    - docker-compose run --rm app bundle exec rake db:drop 2>/dev/null || true
+    - docker-compose run --rm app bundle exec rake db:create db:migrate
+    - docker-compose run --rm app bundle exec rake db:seed
+    - docker-compose run --rm -e RAILS_ENV=test app bundle exec rake db:drop 2>/dev/null || true
+    - docker-compose run --rm -e RAILS_ENV=test app bundle exec rake db:create db:migrate
+console:
+  alias: c
+  desc: Starts the rails console. App needs to be running.
+  execute: docker-compose exec -T app bin/rails console
+cucumber:
+  desc: Runs centrals feature tests
+  args:
+    one:
+      desc: First argument
+      type: string
+    two:
+      desc: Second argument
+      type: string
+  execute: docker-compose exec app bundle exec cucumber
+migrate:
+  desc: Runs rails migrations when the app is running
+  args:
+    three:
+      desc: New argument
+      type: string
+  execute: docker-compose exec app rails db:migrate
+rspec:
+  desc: Runs rspec tests
+  execute: docker-compose run --rm -e RAILS_ENV=test app bundle exec rspec
+selenium:
+  desc: Runs centrals feature tests in browser. VNC localhost:5900 password secret
+  execute: docker-compose exec app DOCKER_SELENIUM=1 bundle exec cucumber
+start:
+  desc: Starts the compose app as if it was rails s locally. attaches the image so pry works unless it is run in background mode. Use docker-compose log to see other services output.
+  execute: docker-compose up -d && docker attach $(docker-compose ps -q app)
+  opts:
+    background:
+      type: boolean
+      aliases:
+        - b
+        - d
+      desc: Run in a background process
+      execute: docker-compose up -d
+stop:
+  desc: Stops the compose app
+  execute: docker-compose down
+status:
+  desc: Displays information of the compose app in a readable format
+  execute: "docker ps --format \\\"{{.Names}}\\n\\tContainer ID: {{.ID}}\\n\\tCommand: {{.Command}}\\n\\tImage: {{.Image}}\\n\\tCreatedAt: {{.CreatedAt}}\\n\\tStatus: {{.Status}}\\\""
+new:
+  desc: This is my new command
+  execute: echo 'THIS IS MY NEW MESSAGE'
+  opts:
+    old:
+      type: boolean
+      desc: Old instead of new
+      execute: echo 'This message is OLD'
+log:
+  aliases:
+    - logs
+    - l
+  desc: Get the logs for a specific service. Service name options are the service keys in docker-compose file
+  execute: docker-compose logs
+perf:
+  desc: Run the JMeter performance test using the compose app.
+  opts:
+    users:
+      type: numeric
+      aliases:
+        - u
+      default: 25
+      desc: Manually supply the number of users for the test
+    requests:
+      type: numeric
+      aliases:
+        - r
+      default: 25
+      desc: Manually supply the number of users for the test
+    duration:
+      type: numeric
+      aliases:
+        - d
+      default: 60
+      desc: Manually supply the number of users for the test
+    cleanup:
+      type: boolean
+      aliases:
+        - c
+      desc: Automatically remove archived database
+exec:
+  desc: Execute a command in the app container
+  execute: docker-compose exec app bundle exec
