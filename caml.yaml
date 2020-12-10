@@ -12,7 +12,7 @@ console:
   desc: Starts the rails console. App needs to be running.
   execute: docker-compose exec -T app bin/rails console
 cucumber:
-  desc: Runs centrals feature tests
+  desc: Run feature tests
   args:
     one:
       desc: First argument
@@ -29,10 +29,10 @@ migrate:
       type: string
   execute: docker-compose exec app rails db:migrate
 rspec:
-  desc: Runs rspec tests
+  desc: Run rspec tests
   execute: docker-compose run --rm -e RAILS_ENV=test app bundle exec rspec
 selenium:
-  desc: Runs centrals feature tests in browser. VNC localhost:5900 password secret
+  desc: Run feature tests in browser
   execute: docker-compose exec app DOCKER_SELENIUM=1 bundle exec cucumber
 start:
   desc: Starts the compose app as if it was rails s locally. attaches the image so pry works unless it is run in background mode. Use docker-compose log to see other services output.
