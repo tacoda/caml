@@ -1,37 +1,30 @@
-## Welcome to GitHub Pages
+## What is `caml`?
 
-You can use the [editor on GitHub](https://github.com/tacoda/caml/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+`caml` is a dynamic CLI tool defined with declarative YAML. You write a `caml.yaml` file in a directory and `caml` will build a CLI tool from it.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Installation
 
-### Markdown
+### Cargo
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```sh
+cargo install caml
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Trust
 
-### Jekyll Themes
+```sh
+curl -LSfs https://japaric.github.io/trust/install.sh | \
+    sh -s -- --git tacoda/caml
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/tacoda/caml/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Brew
 
-### Support or Contact
+Lorem ipsum
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Example Configuration
+
+Lorem ipsum
+
+## Usage
+
+Lorem ipsum
