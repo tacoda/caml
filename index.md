@@ -1,6 +1,6 @@
 ## What is `caml`?
 
-`caml` is a dynamic CLI tool defined with declarative YAML. You write a `caml.yaml` file in a directory and `caml` will build a CLI tool from it.
+`caml` (pronounced _"camel"_) is a dynamic CLI tool defined with declarative YAML. You write a `caml.yaml` file in a directory and `caml` will build a CLI tool from it.
 
 ## Installation
 
