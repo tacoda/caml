@@ -19,12 +19,28 @@ curl -LSfs https://japaric.github.io/trust/install.sh | \
 
 ### Brew
 
-Lorem ipsum
+TODO
 
-## Example Configuration
+## Basic Usage
 
-Lorem ipsum
+```sh
+caml
+```
 
-## Usage
+## Configuration
 
-Lorem ipsum
+```yaml
+pwd:
+  desc: Print the working directory
+  execute: pwd
+```
+
+This configuration will define a `pwd` command with a help description. It will execute the `pwd` shell command when invoked.
+
+## Defined Usage
+
+TODO
+
+## More About Configuration
+
+TODO
