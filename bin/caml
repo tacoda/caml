@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require_relative '../lib/caml/caml'
+
+# TODO:
+# x Yaml
+# x Metaprogramming
+# _ Thor commands, options, arguments, etc.
+# _ Add bash and ruby commands
+# _ Turn into gem
+# _ Distribute via CMM gem server
+# _ Make some noise
+# _ Make it better with Rust
+# _ Distribute a release on GHE
+# _ Make some more noise
+
+
+class CamlCli < Thor
+  def self.load
+    Caml::Config.new.directives.each do |entry|
+      directive = build_directive(entry)
+      args = build_args(directive['args'])
+      opts = build_opts(directive['opts'])
+      command = build_command(directive.merge({'args' => args, 'opts' => opts}))
+      puts command
+      puts ''
+      class_eval command.to_s
+    end
+  end
+
+  private
+
+  def self.build_directive(entry)
+    entry.last.merge({'name' => entry.first, 'args' => entry.last['args'] || [], 'opts' => entry.last['opts'] || []})
+  end
+
+  def self.build_args(args)
+    args.reject { |arg| arg.empty? }
+        .map { |name, arg| arg.merge({'name' => name}) }
+        .map { |arg| Caml::Argument.new(arg) }
+  end
+
+  def self.build_opts(opts)
+    opts.reject { |opt| opt.empty? }
+        .map { |name, opt| opt.merge({'name' => name}) }
+        .map { |opt| Caml::Option.new(opt) }
+  end
+
+  def self.build_command(directive)
+    Caml::Command.new(directive)
+  end
+
+  no_commands do
+    def execute
+      successful = system yield
+      exit successful
+    end
+  end
+
+end
+
+CamlCli.load
+CamlCli.start(ARGV)
