@@ -23,8 +23,8 @@ class CamlCli < Thor
       args = build_args(directive['args'])
       opts = build_opts(directive['opts'])
       command = build_command(directive.merge({'args' => args, 'opts' => opts}))
-      puts command
-      puts ''
+      # puts command
+      # puts ''
       class_eval command.to_s
     end
   end

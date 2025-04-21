@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
     s.name         = "caml"
-    s.version      = "0.1.0"
+    s.version      = "0.1.1"
     s.author       = "Ian Johnson"
     s.email        = "tacoda@hey.com"
     s.summary      = "Build CLI apps using YAML"
