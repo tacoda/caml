@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Caml — Guide</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+            referrerpolicy="no-referrer"
+        />
+        <script>
+            require("@tailwindcss/forms");
+        </script>
+    </head>
+    <body>
+        <div class="bg-gray-900">
+            <!-- Header -->
+            <header class="absolute inset-x-0 top-0 z-50">
+                <nav
+                    class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+                    aria-label="Global"
+                >
+                    <div class="flex lg:flex-1">
+                        <a href="/caml/" class="-m-1.5 p-1.5 text-xl"> 🐪 </a>
+                    </div>
+                    <div class="flex lg:flex-1 justify-center">
+                        <a
+                            href="/caml/guide/"
+                            class="text-white hover:text-gray-300 flex items-center gap-2"
+                        >
+                            Guide
+                        </a>
+                    </div>
+                    <div class="flex lg:flex-1 justify-end">
+                        <a
+                            href="https://github.com/tacoda/caml"
+                            class="text-gray-400 hover:text-gray-300 flex items-center gap-2"
+                        >
+                            <span class="sr-only">GitHub</span>
+                            <svg
+                                class="w-6 h-6"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </a>
+                    </div>
+                </nav>
+            </header>
+
+            <main class="relative isolate">
+                <!-- Background -->
+                <div
+                    class="absolute inset-x-0 top-4 -z-10 flex transform-gpu justify-center overflow-hidden blur-3xl"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="aspect-[1108/632] w-[69.25rem] flex-none bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-25"
+                        style="
+                            clip-path: polygon(
+                                73.6% 51.7%,
+                                91.7% 11.8%,
+                                100% 46.4%,
+                                97.4% 82.2%,
+                                92.5% 84.9%,
+                                75.7% 64%,
+                                55.3% 47.5%,
+                                46.5% 49.4%,
+                                45% 62.9%,
+                                50.3% 87.2%,
+                                21.3% 64.1%,
+                                0.1% 100%,
+                                5.4% 51.1%,
+                                21.4% 63.9%,
+                                58.9% 0.2%,
+                                73.6% 51.7%
+                            );
+                        "
+                    ></div>
+                </div>
+
+                <!-- Header section -->
+                <div class="px-6 pt-14 lg:px-8">
+                    <div class="mx-auto max-w-2xl pt-24 text-center sm:pt-40">
+                        <h1
+                            class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
+                        >
+                            Guide
+                        </h1>
+                        <p
+                            class="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8"
+                        >
+                            Everything you can put in a <code class="text-indigo-400">caml.yaml</code>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="bg-gray-100 mt-32 sm:mt-40 px-4 py-24">
+                    <div class="mx-auto max-w-3xl space-y-20">
+
+                        <!-- Tasks -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Tasks
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                Each top-level key is a task. A task has a <code class="text-indigo-600">desc</code>
+                                and an <code class="text-indigo-600">execute</code> shell command.
+                                Run <code class="text-indigo-600">caml</code> or
+                                <code class="text-indigo-600">caml help</code> to list every task with its description.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">test:
+  desc: Run the test suite
+  execute: bundle exec rspec</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Multi-line execute -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Multi-line execute
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                Pass a list to run multiple steps. Steps run with fail-fast semantics — the first non-zero exit aborts.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">setup:
+  desc: Install and migrate
+  execute:
+    - bundle install
+    - bin/rails db:migrate</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Arguments -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Arguments
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                Positional arguments substitute into the <code class="text-indigo-600">execute</code>
+                                template via <code class="text-indigo-600">{{name}}</code>. Values are shell-escaped.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">greet:
+  desc: Say hello to someone
+  args:
+    name:
+      desc: Person to greet
+      type: string
+  execute: echo Hello, {{name}}!</code></pre>
+                            </div>
+                            <div class="mt-4 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">caml greet world
+# Hello, world!</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Options -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Options
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                Flags with <code class="text-indigo-600">type</code>, optional
+                                <code class="text-indigo-600">aliases</code>, a
+                                <code class="text-indigo-600">default</code> value, and an optional override
+                                <code class="text-indigo-600">execute</code>.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">build:
+  desc: Build the project
+  opts:
+    target:
+      type: string
+      default: dist
+      aliases:
+        - t
+      desc: Output directory
+    verbose:
+      type: boolean
+      aliases:
+        - v
+      desc: Print verbose output
+  execute: make build TARGET={{target}}</code></pre>
+                            </div>
+                            <div class="mt-4 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">caml build --target release
+caml build -t release -v</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Option-driven dispatch -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Option-driven dispatch
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                When a boolean option carries its own
+                                <code class="text-indigo-600">execute</code>, that command runs instead of the
+                                task's default.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">start:
+  desc: Start the app
+  opts:
+    background:
+      type: boolean
+      aliases:
+        - b
+      desc: Run as a daemon
+      execute: app start --daemon
+  execute: app start</code></pre>
+                            </div>
+                            <div class="mt-4 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">caml start                # app start
+caml start --background   # app start --daemon</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Aliases -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Aliases
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                Add shortcut names for a task.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">test:
+  desc: Run the test suite
+  aliases:
+    - t
+  execute: bundle exec rspec</code></pre>
+                            </div>
+                            <div class="mt-4 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">caml t   # same as caml test</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Dependencies -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Dependencies
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                A task can declare prerequisites with <code class="text-indigo-600">needs</code>.
+                                Deps run in declared order, each at most once per invocation; failures abort the run.
+                            </p>
+                            <div class="mt-6 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">test:
+  desc: Run tests
+  execute: bundle exec rspec
+
+lint:
+  desc: Check style
+  execute: bundle exec rubocop
+
+ci:
+  desc: Lint and test
+  needs:
+    - lint
+    - test</code></pre>
+                            </div>
+                            <div class="mt-4 bg-gray-800 text-white rounded-lg shadow-lg p-6">
+                                <pre class="bg-gray-900 text-gray-300 rounded-lg p-4 overflow-auto"><code class="block text-sm">caml ci   # runs lint, then test</code></pre>
+                            </div>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                A task with only <code class="text-indigo-600">needs:</code> and no
+                                <code class="text-indigo-600">execute</code> is a pure orchestrator — useful for grouping.
+                            </p>
+                        </section>
+
+                        <!-- Discovery -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Discovery
+                            </h2>
+                            <p class="mt-4 text-base/7 text-gray-700">
+                                <code class="text-indigo-600">caml</code> walks up from the current directory to find a
+                                <code class="text-indigo-600">caml.yaml</code>, just like
+                                <code class="text-indigo-600">git</code>. You can run it from any subdirectory of
+                                your project.
+                            </p>
+                        </section>
+
+                        <!-- Built-in commands -->
+                        <section>
+                            <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                                Built-in commands
+                            </h2>
+                            <div class="mt-6 overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Command</th>
+                                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                        <tr>
+                                            <td class="px-4 py-3 text-sm text-indigo-600 font-mono">caml init</td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Scaffold a starter <code>caml.yaml</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 text-sm text-indigo-600 font-mono">caml --version</td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Print the installed version</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 text-sm text-indigo-600 font-mono">caml help [cmd]</td>
+                                            <td class="px-4 py-3 text-sm text-gray-700">Show help for a specific task (its args and opts)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Back to home -->
+                        <div class="pt-8 border-t border-gray-300">
+                            <a
+                                href="/caml/"
+                                class="text-indigo-600 hover:text-indigo-500 font-semibold"
+                            >
+                                ← Back to home
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
