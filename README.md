@@ -1,78 +1,175 @@
-# 🐪 caml
+# caml
 
-> Build CLI apps with YAML
+> Build CLI apps from a declarative `caml.yaml` file.
 
-`caml` allows you to build command line applications using declarative yaml.
-`caml` aims to be like `make`, but by using descriptive, declarative yaml.
+`caml` turns well-documented YAML tasks into a runnable CLI. Inspired by `make` and `just`, but YAML-driven.
 
-<!-- ## Installation -->
-
-<!-- TODO -->
-
-<!-- ```sh -->
-<!-- gem install caml -->
-<!-- ``` -->
-
-## Usage
-
-Running the command without any arguments displays the commands defined in the `caml.yaml` file:
+## Install
 
 ```sh
-bin/caml
+gem install caml
 ```
 
-## Declaring commands
+Or in a `Gemfile`:
 
-`caml` reads a file called `caml.yaml` in the current directory and converts those commands into a unified CLI command.
-
-The basic structure is to have a `command`, which has a `desc` and an `execute` for the bash command to execute.
-
-```yaml
-command:
-  desc: Command description
-  execute: script.sh
+```ruby
+gem 'caml'
 ```
 
-This yaml will create the following command:
+## Quickstart
 
-```yaml
-bin/caml command # Command description
+```sh
+caml init                # scaffold a starter caml.yaml
+caml                     # list tasks
+caml hello               # run the starter task
 ```
 
-And it will run any bash command defined.
+## Tasks
 
-Arguments may be added under `args` in a nested fashion as displayed below.
+A task has a name, a `desc`, and an `execute` shell command:
 
 ```yaml
-command:
+test:
+  desc: Run the test suite
+  execute: bundle exec rspec
+```
+
+`caml` and `caml help` list every task with its description.
+
+## Multi-line execute
+
+Pass a list to run multiple steps. Steps run with fail-fast semantics — the first non-zero exit aborts:
+
+```yaml
+setup:
+  desc: Install and migrate
+  execute:
+    - bundle install
+    - bin/rails db:migrate
+```
+
+## Arguments
+
+Positional arguments substitute into the `execute` template via `{{name}}`. Values are shell-escaped:
+
+```yaml
+greet:
+  desc: Say hello to someone
   args:
-    one:
-      desc: First argument
+    name:
+      desc: Person to greet
       type: string
-    two:
-      desc: Second argument
-      type: string
+  execute: echo Hello, {{name}}!
 ```
 
-## Examples
+```sh
+caml greet world
+# Hello, world!
+```
+
+## Options
+
+Flags with type, optional aliases, default value, and an optional override `execute`:
 
 ```yaml
 build:
-  desc: Build our project
-  execute: make
-clean:
-  desc: Clean our project
-  execute: make clean
+  desc: Build the project
+  opts:
+    target:
+      type: string
+      default: dist
+      aliases:
+        - t
+      desc: Output directory
+    verbose:
+      type: boolean
+      aliases:
+        - v
+      desc: Print verbose output
+  execute: make build TARGET={{target}}
 ```
 
+```sh
+caml build --target release
+caml build -t release -v
+```
+
+### Option-driven dispatch
+
+When a boolean option has its own `execute`, that command runs instead of the task's default:
+
 ```yaml
-build:
-  desc: Bundle
-  execute: bundle install
-migrate:
-  desc: Migrate the test database
-  execute: rails db:migrate RAILS_ENV=test
+start:
+  desc: Start the app
+  opts:
+    background:
+      type: boolean
+      aliases:
+        - b
+      desc: Run as a daemon
+      execute: app start --daemon
+  execute: app start
+```
+
+```sh
+caml start                # app start
+caml start --background   # app start --daemon
+```
+
+## Aliases
+
+Add shortcut names for a task:
+
+```yaml
+test:
+  desc: Run the test suite
+  aliases:
+    - t
+  execute: bundle exec rspec
+```
+
+```sh
+caml t   # same as caml test
+```
+
+## Dependencies
+
+A task can declare prerequisites with `needs`. Deps run in declared order, each at most once per invocation; failures abort the run:
+
+```yaml
 test:
   desc: Run tests
-  execute: rspec
+  execute: bundle exec rspec
+
+lint:
+  desc: Check style
+  execute: bundle exec rubocop
+
+ci:
+  desc: Lint and test
+  needs:
+    - lint
+    - test
 ```
+
+```sh
+caml ci   # runs lint, then test
+```
+
+A task with only `needs:` and no `execute` is a pure orchestrator — useful for grouping.
+
+## Discovery
+
+`caml` walks up from the current directory to find a `caml.yaml`, just like `git`. You can run it from any subdirectory of your project.
+
+## Built-in commands
+
+| Command           | Description                                        |
+|-------------------|----------------------------------------------------|
+| `caml init`       | Scaffold a starter `caml.yaml`                     |
+| `caml --version`  | Print the installed version                        |
+| `caml help [cmd]` | Show help for a specific task (its args and opts)  |
+
+## License
+
+MIT — see [LICENSE](LICENSE).

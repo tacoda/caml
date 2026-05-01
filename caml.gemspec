@@ -1,15 +1,21 @@
-Gem::Specification.new do |s|
-  s.name = 'caml'
-  s.version      = '0.1.1'
-  s.author       = 'Ian Johnson'
-  s.email        = 'tacoda@hey.com'
-  s.summary      = 'Build CLI apps using YAML'
-  s.homepage     = 'https://github.com/tacoda/caml'
-  s.licenses     = ['MIT']
-  s.description  = File.read(File.join(File.dirname(__FILE__), 'README.md'))
+require_relative 'lib/caml/version'
 
-  s.files         = Dir['{bin,lib,spec}/**/*'] + %w[LICENSE README.md]
-  s.executables   = ['caml']
+Gem::Specification.new do |s|
+  s.name        = 'caml'
+  s.version     = Caml::VERSION
+  s.author      = 'Ian Johnson'
+  s.email       = 'tacoda@hey.com'
+  s.summary     = 'Build CLI apps from a declarative caml.yaml file'
+  s.description = 'caml turns well-documented YAML tasks into a runnable CLI. ' \
+                  'Inspired by make and just, but YAML-driven.'
+  s.homepage    = 'https://github.com/tacoda/caml'
+  s.licenses    = ['MIT']
+
+  s.files       = Dir['{bin,lib}/**/*'] + %w[LICENSE README.md CHANGELOG.md]
+  s.executables = ['caml']
+
+  s.metadata['source_code_uri'] = 'https://github.com/tacoda/caml'
+  s.metadata['changelog_uri']   = 'https://github.com/tacoda/caml/blob/main/CHANGELOG.md'
 
   s.required_ruby_version = '>= 3.0'
 
