@@ -1,24 +1,26 @@
 module Caml
   class Runner
-    class UnknownTask < StandardError
-    end
-
     def initialize(tasks:, shell:)
       @tasks = tasks
       @shell = shell
     end
 
     def run(name, args: {}, opts: {})
-      task = find(name)
-      command = build_command(task, args, opts)
-      @shell.run(command)
+      plan = Plan.resolve(name, @tasks)
+      plan.each do |task|
+        bindings = task.name == name ? { args: args, opts: opts } : { args: {}, opts: {} }
+        return false unless execute_task(task, **bindings)
+      end
+      true
     end
 
     private
 
-    def find(name)
-      @tasks.find { |task| task.name == name } ||
-        raise(UnknownTask, "no such task: #{name}")
+    def execute_task(task, args:, opts:)
+      return true if task.execute.nil? || Array(task.execute).empty?
+
+      command = build_command(task, args, opts)
+      @shell.run(command)
     end
 
     def build_command(task, args, opts)

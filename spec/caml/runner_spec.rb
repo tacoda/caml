@@ -14,9 +14,9 @@ module Caml
         expect(fake_shell.commands).to eq(['echo hello'])
       end
 
-      it 'raises Runner::UnknownTask when no task matches the given name' do
+      it 'raises Plan::UnknownTask when no task matches the given name' do
         expect { runner.run('missing') }
-          .to raise_error(Runner::UnknownTask, /missing/)
+          .to raise_error(Plan::UnknownTask, /missing/)
       end
 
       it 'returns true when the shell reports success' do

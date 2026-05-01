@@ -18,3 +18,9 @@ lint:
 build:
   desc: Build the gem
   execute: gem build caml.gemspec
+
+ci:
+  desc: Run lint and tests
+  needs:
+    - lint
+    - test

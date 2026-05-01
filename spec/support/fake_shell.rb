@@ -1,14 +1,21 @@
 class FakeShell
   attr_reader :commands
-  attr_writer :next_result
 
   def initialize
     @commands = []
-    @next_result = true
+    @results = [true]
+  end
+
+  def next_result=(value)
+    @results = [value]
+  end
+
+  def next_results=(values)
+    @results = values.dup
   end
 
   def run(command)
     @commands << command
-    @next_result
+    @results.length > 1 ? @results.shift : @results.first
   end
 end

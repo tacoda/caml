@@ -1,0 +1,14 @@
+test:
+  desc: Run the suite
+  execute: bundle exec rspec
+
+lint:
+  desc: Check style
+  execute: bundle exec rubocop
+
+release:
+  desc: Build a release
+  needs:
+    - test
+    - lint
+  execute: tar czf release.tar.gz dist/
