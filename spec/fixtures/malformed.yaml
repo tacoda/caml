@@ -1,0 +1,3 @@
+greet:
+  desc: "missing close
+  execute: echo hi

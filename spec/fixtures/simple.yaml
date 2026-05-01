@@ -1,0 +1,6 @@
+greet:
+  desc: Say hello
+  execute: echo hello
+build:
+  desc: Build the project
+  execute: make build

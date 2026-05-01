@@ -2,5 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'thor', '~> 1.0', '>= 1.0.1'
-gem 'safe_yaml', '~> 1.0', '>= 1.0.5'
+group :development, :test do
+  gem 'rspec'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
+end
