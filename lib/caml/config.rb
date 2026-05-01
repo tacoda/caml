@@ -17,6 +17,19 @@ module Caml
       from_raw(raw)
     end
 
+    def self.discover(start_dir)
+      dir = File.expand_path(start_dir)
+      loop do
+        candidate = File.join(dir, 'caml.yaml')
+        return candidate if File.file?(candidate)
+
+        parent = File.dirname(dir)
+        return nil if parent == dir
+
+        dir = parent
+      end
+    end
+
     def self.from_tasks(tasks)
       new(tasks)
     end
@@ -26,9 +39,9 @@ module Caml
     end
 
     def self.parse(content, path)
-      SafeYAML.load(content, safe: true, raise_on_unknown_tag: true) || {}
+      SafeYAML.load(content, nil, safe: true, raise_on_unknown_tag: true) || {}
     rescue Psych::SyntaxError, SafeYAML::UnknownTagError => e
-      raise Malformed, "could not parse #{path}: #{e.message}"
+      raise Malformed, "could not parse #{path}: #{e.message.sub(/\A\([^)]*\):\s*/, '')}"
     end
     private_class_method :parse
 

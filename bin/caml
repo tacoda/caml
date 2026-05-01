@@ -1,9 +1,30 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/caml'
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+require 'caml'
 
-config = Caml::Config.load(File.join(Dir.getwd, 'caml.yaml'))
-runner = Caml::Runner.new(tasks: config.tasks, shell: Caml::Shell.new)
-Caml::CLI.register(config: config, runner: runner)
+if %w[--version -v].include?(ARGV.first)
+  puts Caml::VERSION
+  exit 0
+end
+
+config_path = Caml::Config.discover(Dir.getwd)
+
+if config_path
+  begin
+    config = Caml::Config.load(config_path)
+  rescue Caml::Config::Malformed => e
+    warn "caml: #{e.message}"
+    exit 1
+  end
+
+  runner = Caml::Runner.new(tasks: config.tasks, shell: Caml::Shell.new)
+  Caml::CLI.register(config: config, runner: runner)
+elsif !ARGV.empty? && !%w[init help -h --help].include?(ARGV.first)
+  warn 'caml: no caml.yaml found in this directory or any parent.'
+  warn 'Run `caml init` to scaffold one.'
+  exit 1
+end
+
 result = Caml::CLI.start(ARGV)
 exit(result == false ? 1 : 0)

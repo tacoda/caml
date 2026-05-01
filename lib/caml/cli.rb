@@ -8,6 +8,20 @@ module Caml
       'numeric' => :numeric
     }.freeze
 
+    def self.exit_on_failure?
+      true
+    end
+
+    desc 'init', 'Scaffold a starter caml.yaml in the current directory'
+    def init
+      target = File.join(Dir.pwd, 'caml.yaml')
+      Init.scaffold(target)
+      say "Created #{target}", :green
+    rescue Init::Conflict => e
+      say "caml init: #{e.message}", :red
+      exit 1
+    end
+
     def self.register(config:, runner:)
       config.tasks.each { |task| register_task(task, runner) }
     end
