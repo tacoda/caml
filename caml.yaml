@@ -1,9 +1,18 @@
 test:
   desc: Run the test suite
+  aliases:
+    - t
   execute: bundle exec rspec
 
 lint:
   desc: Check code style
+  opts:
+    fix:
+      type: boolean
+      aliases:
+        - a
+      desc: Auto-correct correctable offenses
+      execute: bundle exec rubocop -A
   execute: bundle exec rubocop
 
 build:

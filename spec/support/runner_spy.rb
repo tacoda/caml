@@ -1,12 +1,16 @@
 class RunnerSpy
-  attr_reader :invocations
+  attr_reader :calls
 
   def initialize
-    @invocations = []
+    @calls = []
   end
 
-  def run(name)
-    @invocations << name
+  def run(name, args: {}, opts: {})
+    @calls << { name: name, args: args, opts: opts }
     true
+  end
+
+  def invocations
+    @calls.map { |call| call[:name] }
   end
 end

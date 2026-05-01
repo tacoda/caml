@@ -43,12 +43,43 @@ module Caml
         name: name,
         desc: body['desc'],
         execute: body['execute'],
-        args: body['args'] || [],
-        opts: body['opts'] || [],
+        args: build_args(body['args']),
+        opts: build_opts(body['opts']),
         aliases: body['aliases'] || [],
         needs: body['needs'] || []
       )
     end
     private_class_method :build_task
+
+    def self.build_args(raw)
+      return [] unless raw
+
+      raw.map { |name, fields| build_argument(name, fields || {}) }
+    end
+    private_class_method :build_args
+
+    def self.build_argument(name, fields)
+      attrs = { name: name, desc: fields['desc'] }
+      attrs[:type] = fields['type'] if fields['type']
+      Argument.new(**attrs)
+    end
+    private_class_method :build_argument
+
+    def self.build_opts(raw)
+      return [] unless raw
+
+      raw.map { |name, fields| build_option(name, fields || {}) }
+    end
+    private_class_method :build_opts
+
+    def self.build_option(name, fields)
+      attrs = { name: name, desc: fields['desc'] }
+      attrs[:type] = fields['type'] if fields['type']
+      attrs[:aliases] = fields['aliases'] if fields['aliases']
+      attrs[:default] = fields['default'] unless fields['default'].nil?
+      attrs[:execute] = fields['execute'] if fields['execute']
+      Option.new(**attrs)
+    end
+    private_class_method :build_option
   end
 end

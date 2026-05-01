@@ -1,0 +1,41 @@
+greet:
+  desc: Say hello
+  args:
+    name:
+      desc: Person to greet
+      type: string
+  execute: echo hello {{name}}
+
+build:
+  desc: Build the project
+  aliases:
+    - b
+    - compile
+  opts:
+    verbose:
+      type: boolean
+      aliases:
+        - v
+      desc: Print verbose output
+    target:
+      type: string
+      default: dist
+      desc: Build target directory
+  execute: make build
+
+start:
+  desc: Start the app
+  opts:
+    background:
+      type: boolean
+      aliases:
+        - b
+      desc: Run in background
+      execute: app start --daemon
+  execute: app start
+
+setup:
+  desc: Multi-step setup
+  execute:
+    - echo step-one
+    - echo step-two
