@@ -10,453 +10,334 @@
 <meta property="og:url" content="https://www.tacoda.dev/caml/">
 <meta property="og:title" content="caml · build CLI apps from a declarative caml.yaml file">
 <meta property="og:description" content="caml turns well-documented YAML tasks into a runnable CLI. Inspired by make and just, but YAML-driven.">
-<meta property="og:image" content="https://www.tacoda.dev/caml/camel.jpg">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="caml · build CLI apps from a declarative caml.yaml file">
 <meta name="twitter:description" content="caml turns well-documented YAML tasks into a runnable CLI. Inspired by make and just, but YAML-driven.">
-<meta name="twitter:image" content="https://www.tacoda.dev/caml/camel.jpg">
-<meta name="theme-color" content="#0D0D0F">
-<link rel="icon" type="image/jpeg" href="camel.jpg">
+<meta name="theme-color" content="#F6F7F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12151A" media="(prefers-color-scheme: dark)">
+
+<!-- Restore a stored theme before first paint, so a toggled reader never sees a flash. -->
+<script>try{var t=localStorage.getItem('caml-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="voice-register" content="informational">
 <meta name="voice-english" content="ste">
 <meta name="voice-first-person" content="exempt: reference material for caml.yaml keys and built-in commands; every claim on this page comes from the repository, not from me">
 
 <style>
+/* ============================================================
+   LEDGER · light structural document
+   Tokens and contrast ratios: styles/ledger.md
+   ============================================================ */
+
 :root {
-  --bg:       #0D0D0F;
-  --bg-2:     #16161A;
-  --panel:    #16161A;
-  --panel-2:  #1d1d22;
-  --border:   #2a2a31;
+  --ground:      #F6F7F9;
+  --surface:     #FFFFFF;
+  --surface-2:   #ECEFF3;
+  --ink:         #15181C;
+  --ink-2:       #3D444E;
+  --ink-3:       #5A626E;
+  --rule:        #808996;
+  --rule-soft:   #D5DAE1;
+  --accent:      #2B5B8C;
+  --accent-2:    #1E4166;
+  --accent-wash: #E4EBF3;
 
-  --text:     #E8E6E3;
-  --muted:    #8A8A93;
+  --indent: 2ch;
+  --measure: 68ch;
+  --pad: clamp(1.25rem, 4vw, 2.5rem);
 
-  --orange:   #f7c46e;
-  --orange-2: #F2A93B;
-  --silver:   #E8E6E3;
-  --silver-2: #8A8A93;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
 
-  --maxw:     1160px;
-  --radius:   16px;
-
-  --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:#12151A; --surface:#191D23; --surface-2:#22272F;
+    --ink:#EEF1F5; --ink-2:#B4BCC7; --ink-3:#8C95A2;
+    --rule:#687484; --rule-soft:#2A313B;
+    --accent:#7FB0E0; --accent-2:#A8CBEF; --accent-wash:#1B2632;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:#12151A; --surface:#191D23; --surface-2:#22272F;
+  --ink:#EEF1F5; --ink-2:#B4BCC7; --ink-3:#8C95A2;
+  --rule:#687484; --rule-soft:#2A313B;
+  --accent:#7FB0E0; --accent-2:#A8CBEF; --accent-wash:#1B2632;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html {
-  scroll-behavior: auto;
-  -webkit-text-size-adjust: 100%;
-}
+html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--ground);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.62;
   overflow-x: hidden;
 }
 
-h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
-p { margin: 0 0 1rem; }
+h1, h2, h3 {
+  font-family: var(--mono);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--ink);
+}
+h2::after { content: ":"; color: var(--rule); }
+
+p { margin: 0 0 1rem; color: var(--ink-2); max-width: var(--measure); }
 p:last-child { margin-bottom: 0; }
 
-a { color: var(--orange-2); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-:focus-visible {
-  outline: 2px solid var(--orange-2);
-  outline-offset: 3px;
-  border-radius: 4px;
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-soft);
 }
+a:hover { color: var(--accent-2); border-bottom-color: currentColor; }
 
-[id] { scroll-margin-top: 6.5rem; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+[id] { scroll-margin-top: 5rem; }
 
 code, kbd, pre, samp { font-family: var(--mono); }
 
-/* ---------- layout ---------- */
+/* ---------- shell ---------- */
 
-.wrap {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
+.sheet { max-width: 1100px; margin: 0 auto; padding: 0 var(--pad); }
 
 .skip {
   position: absolute;
   left: -9999px;
   top: 0;
   z-index: 100;
-  background: var(--orange-2);
-  color: var(--bg);
-  padding: 0.75rem 1.25rem;
-  font-weight: 600;
-  border-radius: 0 0 var(--radius) 0;
+  background: var(--accent);
+  color: var(--surface);
+  padding: .7rem 1.2rem;
+  font-family: var(--mono);
+  border: 0;
 }
 .skip:focus { left: 0; }
 
 /* ---------- sticky nav ---------- */
 
-.topbar {
+.railnav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: var(--ground);
+  border-bottom: 1px solid var(--rule);
 }
-
-.topbar-inner {
+.railnav-inner {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  min-height: 60px;
-  padding: 0.5rem 1.5rem;
-  max-width: var(--maxw);
-  margin: 0 auto;
-}
-
-.brand {
-  font-family: var(--mono);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-}
-.brand:hover { text-decoration: none; color: var(--orange-2); }
-
-.topnav {
-  flex: 1;
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.topnav ul {
-  display: flex;
   gap: 1.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  min-height: 52px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: .4rem var(--pad);
 }
-.topnav a {
+.wordmark {
   font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.topnav a:hover { color: var(--text); text-decoration: none; }
-
-.gh {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--muted);
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-.gh:hover { color: var(--text); text-decoration: none; }
-.gh svg { width: 20px; height: 20px; fill: currentColor; flex: none; }
-
-/* ---------- hero ---------- */
-
-.hero { padding: 5rem 0 3rem; }
-
-.terminal {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--panel);
-  overflow: hidden;
-  margin-bottom: 2.75rem;
-  max-width: 640px;
-}
-.terminal-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 0.9rem;
-  border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-.dots { display: flex; gap: 0.35rem; }
-.dots span {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--border);
-  display: block;
-}
-.terminal pre { margin: 0; border: 0; border-radius: 0; background: var(--panel); }
-
-h1 {
-  font-size: clamp(2.1rem, 6vw, 3.6rem);
-  max-width: 22ch;
-}
-h1 code {
-  font-size: 0.82em;
-  color: var(--orange-2);
-  letter-spacing: -0.01em;
-}
-
-.lede {
-  margin-top: 1.75rem;
-  max-width: 62ch;
-  color: var(--muted);
-  font-size: 1.08rem;
-}
-.lede code { color: var(--orange); }
-
-.facts {
-  margin: 2rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.9rem;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-.facts li::after { content: " ·"; color: var(--border); }
-.facts li:last-child::after { content: ""; }
-
-.actions {
-  margin-top: 2.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-.btn {
-  display: inline-block;
-  padding: 0.7rem 1.4rem;
-  border-radius: var(--radius);
   font-weight: 600;
-  font-size: 0.95rem;
-  border: 1px solid var(--orange-2);
-  background: var(--orange-2);
-  color: var(--bg);
+  color: var(--ink);
+  border: 0;
+  white-space: nowrap;
 }
-.btn:hover { text-decoration: none; background: var(--orange); border-color: var(--orange); }
-.btn-ghost {
+.wordmark::after { content: ":"; color: var(--rule); }
+.wordmark:hover { color: var(--accent); }
+
+.navlist { flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; }
+.navlist ul { display: flex; gap: 1.1rem; list-style: none; margin: 0; padding: 0; }
+.navlist a {
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .04em;
+  color: var(--ink-3);
+  border: 0;
+  white-space: nowrap;
+}
+.navlist a:hover { color: var(--accent); }
+
+.toggle {
+  font-family: var(--mono);
+  font-size: .74rem;
+  color: var(--ink-3);
   background: transparent;
-  border-color: var(--border);
-  color: var(--text);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: .3rem .6rem;
+  cursor: pointer;
+  white-space: nowrap;
 }
-.btn-ghost:hover { background: var(--panel); border-color: var(--muted); color: var(--text); }
+.toggle:hover { color: var(--accent); border-color: var(--accent); }
 
-/* ---------- banner image ---------- */
+/* ---------- key: value primitive ---------- */
 
-.banner {
-  margin: 1rem 0 0;
-  max-width: var(--maxw);
-  margin-inline: auto;
-  padding: 0 1.5rem;
-}
-.banner img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 9 / 4;
-  object-fit: cover;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-}
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .3rem .75rem; margin: 0; }
+.kv > dt { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+.kv > dt::after { content: ":"; color: var(--rule); }
+.kv > dd { margin: 0; color: var(--ink); min-width: 0; }
 
-/* ---------- sections ---------- */
+.node { padding-left: var(--indent); border-left: 1px solid var(--rule); }
 
-section { padding: 4rem 0 0; }
-section > .wrap > :last-child { margin-bottom: 0; }
+/* ---------- masthead ---------- */
+
+.masthead { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--rule); }
 
 .eyebrow {
   font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.14em;
+  font-size: .72rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 0.85rem;
+  color: var(--ink-3);
+  margin: 0 0 .9rem;
 }
 
-h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); }
-.section-lede {
-  margin-top: 1rem;
-  max-width: 62ch;
-  color: var(--muted);
-}
-.section-lede code { color: var(--orange); }
+h1 { font-size: clamp(2rem, 5.5vw, 3.1rem); max-width: 20ch; }
+h1 .val { color: var(--accent); }
 
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-  max-width: 820px;
+.lede {
+  font-size: 1.15rem;
+  color: var(--ink-2);
+  max-width: var(--measure);
+  margin: 1.6rem 0 0;
 }
+
+.masthead .facts { margin-top: 2.25rem; font-size: .82rem; }
+.masthead .facts > dt { color: var(--ink-3); }
+.masthead .facts > dd { font-family: var(--mono); color: var(--ink-2); }
+
+.actions { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: .6rem; }
+.btn {
+  font-family: var(--mono);
+  font-size: .85rem;
+  padding: .6rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink);
+  background: transparent;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-fill { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn-fill:hover { background: var(--accent-2); border-color: var(--accent-2); color: var(--surface); }
+
+/* ---------- sections ---------- */
+
+section { padding: 3.25rem 0; border-bottom: 1px solid var(--rule-soft); }
+section:last-of-type { border-bottom: 0; }
+
+h2 { font-size: clamp(1.3rem, 3vw, 1.75rem); }
+.sub { margin-top: 1rem; color: var(--ink-2); max-width: var(--measure); }
+
+/* ---------- code ---------- */
 
 pre {
-  margin: 0;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.1rem 1.25rem;
+  margin: 1.25rem 0 0;
+  background: var(--surface);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: 1rem 1.15rem;
   overflow-x: auto;
-  font-size: 0.84rem;
-  line-height: 1.75;
-  color: var(--text);
+  font-size: .84rem;
+  line-height: 1.7;
+  color: var(--ink);
   tab-size: 2;
 }
-pre + pre { margin-top: 0.9rem; }
-pre .c { color: var(--muted); }
+pre .k { color: var(--accent); }
+pre .c { color: var(--ink-3); }
 
-p code, li code, td code, th code, dd code, dt code {
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 0.08em 0.35em;
-  font-size: 0.86em;
-  color: var(--orange-2);
+code {
+  background: var(--surface-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: .08em .35em;
+  font-size: .86em;
+  color: var(--accent);
 }
+pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
+h1 code, h2 code { background: none; border: 0; padding: 0; font-size: inherit; }
 
-/* ---------- feature grid ---------- */
+/* ---------- feature list: kv rows, not cards ---------- */
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-  padding: 0;
-}
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.4rem;
-}
-.card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
-.card p { color: var(--muted); font-size: 0.95rem; }
+.features { margin-top: 1.75rem; gap: .9rem .9rem; }
+.features > dt { align-self: start; }
+.features > dd { color: var(--ink-2); max-width: var(--measure); }
 
 /* ---------- reference ---------- */
 
-.contents {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.35rem 1.5rem;
-  margin-top: 2rem;
-}
-.contents h3 {
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 500;
-  margin-bottom: 0.9rem;
-}
-.contents ol {
-  list-style: none;
-  margin: 0;
+.toc {
+  margin: 1.75rem 0 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
-  gap: 0.5rem 1.5rem;
+  list-style: none;
   counter-reset: toc;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: .35rem 1.5rem;
 }
-.contents li { counter-increment: toc; font-size: 0.95rem; }
-.contents li::before {
+.toc li { counter-increment: toc; display: grid; grid-template-columns: max-content 1fr; gap: .6rem; }
+.toc li::before {
   content: counter(toc) ".";
   font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-right: 0.5rem;
+  font-size: .82rem;
+  color: var(--ink-3);
 }
 
-.topic { padding-top: 3rem; }
-.topic h3 { font-size: 1.35rem; }
-.topic p { color: var(--muted); margin-top: 0.9rem; max-width: 68ch; }
-.topic p code { color: var(--orange-2); }
-.topic .panel { margin-top: 1.25rem; }
+.topic { margin-top: 2.5rem; }
+.topic h3 { font-size: 1.05rem; }
+.topic p { margin-top: .9rem; }
+.topic .node { margin-top: 1rem; }
+.topic .node > pre:first-child { margin-top: 0; }
 
-.scroller {
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-top: 1.5rem;
-  max-width: 820px;
+.callout {
+  margin-top: 1.25rem;
+  background: var(--accent-wash);
+  border-left: 3px solid var(--accent);
+  padding: .85rem 1.1rem;
+  max-width: var(--measure);
 }
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 460px;
-  font-size: 0.92rem;
-}
-th, td {
-  text-align: left;
-  padding: 0.8rem 1.1rem;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
+.callout p { color: var(--ink); margin: 0; }
+
+.scroller { overflow-x: auto; margin-top: 1.25rem; max-width: 780px; }
+table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: .92rem; }
+th, td { text-align: left; padding: .7rem .95rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
 thead th {
-  background: var(--panel);
-  font-size: 0.74rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
   font-family: var(--mono);
-  letter-spacing: 0.1em;
+  font-size: .72rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 500;
+  color: var(--ink-3);
+  font-weight: 600;
 }
 tbody tr:last-child td { border-bottom: 0; }
-tbody td:first-child { font-family: var(--mono); color: var(--orange-2); white-space: nowrap; }
-tbody td { color: var(--muted); }
+tbody td:first-child { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+tbody td { color: var(--ink-2); }
 
 /* ---------- footer ---------- */
 
-.page-foot {
-  margin-top: 6rem;
-  border-top: 1px solid var(--border);
-  padding: 2.5rem 0 3.5rem;
-}
-.foot-inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.foot-links {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9rem;
-}
-.foot-note {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  margin: 0;
-}
+.page-foot { border-top: 1px solid var(--rule); padding: 2.5rem 0 4rem; }
+.foot-links { list-style: none; display: flex; flex-wrap: wrap; gap: 1.1rem; margin: 0 0 1rem; padding: 0; font-size: .92rem; }
+.foot-note { font-family: var(--mono); font-size: .78rem; color: var(--ink-3); margin: 0; }
 
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .hero { padding: 3rem 0 2rem; }
-  section { padding-top: 3rem; }
-  .topic { padding-top: 2.25rem; }
+  .masthead { padding: 2.75rem 0 2.25rem; }
+  section { padding: 2.5rem 0; }
+  .kv { grid-template-columns: 1fr; gap: .15rem; }
+  .kv > dd { padding-left: var(--indent); margin-bottom: .55rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: .01ms !important;
   }
 }
 </style>
@@ -465,149 +346,111 @@ tbody td { color: var(--muted); }
 
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="./">caml</a>
-    <nav class="topnav" aria-label="Sections">
+<header class="railnav">
+  <div class="railnav-inner">
+    <a class="wordmark" href="./">caml</a>
+    <nav class="navlist" aria-label="Sections">
       <ul>
-        <li><a href="#install">Install</a></li>
-        <li><a href="#quickstart">Quickstart</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#reference">Reference</a></li>
-        <li><a href="#commands">Commands</a></li>
+        <li><a href="#install">install</a></li>
+        <li><a href="#quickstart">quickstart</a></li>
+        <li><a href="#features">features</a></li>
+        <li><a href="#reference">reference</a></li>
+        <li><a href="#commands">commands</a></li>
       </ul>
     </nav>
-    <a class="gh" href="https://github.com/tacoda/caml">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
-      <span>GitHub</span>
-    </a>
+    <button class="toggle" id="theme-toggle" type="button" aria-pressed="false">theme</button>
   </div>
 </header>
 
 <main id="main">
+  <div class="sheet">
 
-  <!-- ============ hero ============ -->
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="wrap">
-      <div class="terminal">
-        <div class="terminal-bar">
-          <span class="dots" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span>caml · ~/acme/billing</span>
-        </div>
-<pre><code>$ gem install caml
-$ caml init       <span class="c"># scaffold a starter caml.yaml</span>
-$ caml            <span class="c"># list tasks</span>
-$ caml hello      <span class="c"># run the starter task</span></code></pre>
-      </div>
-
-      <h1 id="hero-title">Build CLI apps from a declarative <code>caml.yaml</code> file.</h1>
+    <!-- ============ masthead ============ -->
+    <header class="masthead">
+      <p class="eyebrow">Ruby gem</p>
+      <h1>Build CLI apps from a declarative <span class="val">caml.yaml</span> file.</h1>
 
       <p class="lede">
         caml turns well-documented YAML tasks into a runnable CLI.
         <code>make</code> and <code>just</code> inspired it, but the tasks live in YAML.
-        Give a task a name, a
-        <code>desc</code>, and an <code>execute</code> shell command, then run
-        <code>caml</code> to list every task with its description. caml does not track file
-        timestamps, so it never skips work that is already done. Treat it as a task runner,
-        not a build system.
+        Give a task a name, a <code>desc</code>, and an <code>execute</code> shell command,
+        then run <code>caml</code> to list every task with its description. caml does not
+        track file timestamps, so it never skips work that is already done. Treat it as a
+        task runner, not a build system.
       </p>
 
-      <ul class="facts">
-        <li>Version 1.0.0</li>
-        <li>Ruby 3.0 or newer</li>
-        <li>MIT license</li>
-        <li>gem install caml</li>
-      </ul>
+      <dl class="kv facts">
+        <dt>version</dt><dd>1.0.0</dd>
+        <dt>ruby</dt><dd>3.0 or newer</dd>
+        <dt>license</dt><dd>MIT</dd>
+        <dt>install</dt><dd>gem install caml</dd>
+      </dl>
 
       <div class="actions">
-        <a class="btn" href="#quickstart">Quickstart</a>
-        <a class="btn btn-ghost" href="#reference">Read the reference</a>
+        <a class="btn btn-fill" href="#quickstart">Quickstart</a>
+        <a class="btn" href="#reference">Read the reference</a>
       </div>
-    </div>
-  </section>
+    </header>
 
-  <figure class="banner">
-    <img src="camel.jpg" alt="" width="1108" height="493">
-  </figure>
-
-  <!-- ============ install ============ -->
-  <section id="install" aria-labelledby="install-title">
-    <div class="wrap">
-      <p class="eyebrow">Get it</p>
-      <h2 id="install-title">Install</h2>
-      <p class="section-lede">caml ships as a Ruby gem and needs Ruby 3.0 or newer.</p>
-      <div class="panel">
+    <!-- ============ install ============ -->
+    <section id="install" aria-labelledby="install-title">
+      <h2 id="install-title">install</h2>
+      <p class="sub">caml ships as a Ruby gem and needs Ruby 3.0 or newer.</p>
 <pre><code>gem install caml</code></pre>
-      </div>
-      <p class="section-lede">To pin caml to one project instead, add it to that project's <code>Gemfile</code>.</p>
-      <div class="panel">
+      <p class="sub">To pin caml to one project instead, add it to that project's <code>Gemfile</code>.</p>
 <pre><code>gem 'caml'</code></pre>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ quickstart ============ -->
-  <section id="quickstart" aria-labelledby="quickstart-title">
-    <div class="wrap">
-      <p class="eyebrow">Four commands</p>
-      <h2 id="quickstart-title">Quickstart</h2>
-      <p class="section-lede">
-        Run <code>caml init</code> first, because it writes the starter <code>caml.yaml</code>
-        that the next two commands read. If a <code>caml.yaml</code> already exists, caml
-        refuses to overwrite it and exits 1. Rename the old file, then retry.
+    <!-- ============ quickstart ============ -->
+    <section id="quickstart" aria-labelledby="quickstart-title">
+      <h2 id="quickstart-title">quickstart</h2>
+      <p class="sub">
+        Run <code>caml init</code> first, because it writes the starter
+        <code>caml.yaml</code> that the next two commands read.
       </p>
-      <div class="panel">
 <pre><code>gem install caml
 caml init       <span class="c"># scaffold a starter caml.yaml</span>
 caml            <span class="c"># list tasks</span>
 caml hello      <span class="c"># run the starter task</span></code></pre>
+      <div class="callout">
+        <p>
+          If a <code>caml.yaml</code> already exists, caml refuses to overwrite it and
+          exits 1. Rename the old file, then retry.
+        </p>
       </div>
-      <p class="section-lede">
-        The scaffold holds one task, <code>hello</code>. Open the file, replace that task with
-        a real one, then read the <a href="#reference">reference</a> for every key a task
-        accepts.
+      <p class="sub">
+        The scaffold holds one task, <code>hello</code>. Open the file, replace that task
+        with a real one, then read the <a href="#reference">reference</a> for every key a
+        task accepts.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ features ============ -->
-  <section id="features" aria-labelledby="features-title">
-    <div class="wrap">
-      <p class="eyebrow">Why YAML</p>
-      <h2 id="features-title">What you write, and what caml does with it</h2>
-      <p class="section-lede">
-        You declare commands. caml builds the CLI around them on every run.
-      </p>
-      <div class="cards">
-        <div class="card">
-          <h3>Declarative YAML</h3>
-          <p>Define your commands in YAML. Every top-level key in the file is a task.</p>
-        </div>
-        <div class="card">
-          <h3>Three keys per task</h3>
-          <p>A task needs a name, a <code>desc</code>, and an <code>execute</code> shell command. It needs nothing else.</p>
-        </div>
-        <div class="card">
-          <h3>Read on every run</h3>
-          <p>caml reads <code>caml.yaml</code> and registers the commands each time you invoke it. No build step. No cache to clear.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- ============ features ============ -->
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title">features</h2>
+      <p class="sub">You declare commands. caml builds the CLI around them on every run.</p>
+      <dl class="kv features">
+        <dt>declarative</dt>
+        <dd>Define your commands in YAML. Every top-level key in the file is a task.</dd>
 
-  <!-- ============ reference ============ -->
-  <section id="reference" aria-labelledby="reference-title">
-    <div class="wrap">
-      <p class="eyebrow">Reference</p>
-      <h2 id="reference-title">Everything you can put in a <code>caml.yaml</code></h2>
-      <p class="section-lede">
+        <dt>three keys</dt>
+        <dd>A task needs a name, a <code>desc</code>, and an <code>execute</code> shell command. It needs nothing else.</dd>
+
+        <dt>read on every run</dt>
+        <dd>caml reads <code>caml.yaml</code> and registers the commands each time you invoke it. No build step. No cache to clear.</dd>
+      </dl>
+    </section>
+
+    <!-- ============ reference ============ -->
+    <section id="reference" aria-labelledby="reference-title">
+      <h2 id="reference-title">reference</h2>
+      <p class="sub">
         Each topic below shows the YAML first and then explains it, so you can skim the
         blocks and stop where the shape matches your problem. Copy any example as it stands.
       </p>
 
-      <nav class="contents" aria-labelledby="contents-title">
-        <h3 id="contents-title">On this page</h3>
-        <ol>
+      <nav aria-label="Reference contents">
+        <ol class="toc">
           <li><a href="#tasks">Tasks</a></li>
           <li><a href="#multiline">Multi-line execute</a></li>
           <li><a href="#arguments">Arguments</a></li>
@@ -620,13 +463,12 @@ caml hello      <span class="c"># run the starter task</span></code></pre>
         </ol>
       </nav>
 
-      <!-- tasks -->
       <article class="topic" id="tasks" aria-labelledby="tasks-title">
         <h3 id="tasks-title">Tasks</h3>
-        <div class="panel">
-<pre><code>test:
-  desc: Run the test suite
-  execute: bundle exec rspec</code></pre>
+        <div class="node">
+<pre><code><span class="k">test</span>:
+  <span class="k">desc</span>: Run the test suite
+  <span class="k">execute</span>: bundle exec rspec</code></pre>
         </div>
         <p>
           Each top-level key is a task. A task has a <code>desc</code> and an
@@ -635,33 +477,31 @@ caml hello      <span class="c"># run the starter task</span></code></pre>
         </p>
       </article>
 
-      <!-- multi-line execute -->
       <article class="topic" id="multiline" aria-labelledby="multiline-title">
         <h3 id="multiline-title">Multi-line execute</h3>
-        <div class="panel">
-<pre><code>setup:
-  desc: Install and migrate
-  execute:
+        <div class="node">
+<pre><code><span class="k">setup</span>:
+  <span class="k">desc</span>: Install and migrate
+  <span class="k">execute</span>:
     - bundle install
     - bin/rails db:migrate</code></pre>
         </div>
         <p>
-          Pass a list to run several steps. Steps run with fail-fast semantics, so the first
-          non-zero exit aborts the task.
+          Pass a list to run several steps. Steps run with fail-fast semantics, so the
+          first non-zero exit aborts the task.
         </p>
       </article>
 
-      <!-- arguments -->
       <article class="topic" id="arguments" aria-labelledby="arguments-title">
         <h3 id="arguments-title">Arguments</h3>
-        <div class="panel">
-<pre><code>greet:
-  desc: Say hello to someone
-  args:
-    name:
-      desc: Person to greet
-      type: string
-  execute: echo Hello, {{name}}!</code></pre>
+        <div class="node">
+<pre><code><span class="k">greet</span>:
+  <span class="k">desc</span>: Say hello to someone
+  <span class="k">args</span>:
+    <span class="k">name</span>:
+      <span class="k">desc</span>: Person to greet
+      <span class="k">type</span>: string
+  <span class="k">execute</span>: echo Hello, {{name}}!</code></pre>
 <pre><code>caml greet world
 <span class="c"># Hello, world!</span></code></pre>
         </div>
@@ -671,25 +511,24 @@ caml hello      <span class="c"># run the starter task</span></code></pre>
         </p>
       </article>
 
-      <!-- options -->
       <article class="topic" id="options" aria-labelledby="options-title">
         <h3 id="options-title">Options</h3>
-        <div class="panel">
-<pre><code>build:
-  desc: Build the project
-  opts:
-    target:
-      type: string
-      default: dist
-      aliases:
+        <div class="node">
+<pre><code><span class="k">build</span>:
+  <span class="k">desc</span>: Build the project
+  <span class="k">opts</span>:
+    <span class="k">target</span>:
+      <span class="k">type</span>: string
+      <span class="k">default</span>: dist
+      <span class="k">aliases</span>:
         - t
-      desc: Output directory
-    verbose:
-      type: boolean
-      aliases:
+      <span class="k">desc</span>: Output directory
+    <span class="k">verbose</span>:
+      <span class="k">type</span>: boolean
+      <span class="k">aliases</span>:
         - v
-      desc: Print verbose output
-  execute: make build TARGET={{target}}</code></pre>
+      <span class="k">desc</span>: Print verbose output
+  <span class="k">execute</span>: make build TARGET={{target}}</code></pre>
 <pre><code>caml build --target release
 caml build -t release -v</code></pre>
         </div>
@@ -700,20 +539,19 @@ caml build -t release -v</code></pre>
         </p>
       </article>
 
-      <!-- dispatch -->
       <article class="topic" id="dispatch" aria-labelledby="dispatch-title">
         <h3 id="dispatch-title">Option-driven dispatch</h3>
-        <div class="panel">
-<pre><code>start:
-  desc: Start the app
-  opts:
-    background:
-      type: boolean
-      aliases:
+        <div class="node">
+<pre><code><span class="k">start</span>:
+  <span class="k">desc</span>: Start the app
+  <span class="k">opts</span>:
+    <span class="k">background</span>:
+      <span class="k">type</span>: boolean
+      <span class="k">aliases</span>:
         - b
-      desc: Run as a daemon
-      execute: app start --daemon
-  execute: app start</code></pre>
+      <span class="k">desc</span>: Run as a daemon
+      <span class="k">execute</span>: app start --daemon
+  <span class="k">execute</span>: app start</code></pre>
 <pre><code>caml start                <span class="c"># app start</span>
 caml start --background   <span class="c"># app start --daemon</span></code></pre>
         </div>
@@ -723,35 +561,33 @@ caml start --background   <span class="c"># app start --daemon</span></code></pr
         </p>
       </article>
 
-      <!-- aliases -->
       <article class="topic" id="aliases" aria-labelledby="aliases-title">
         <h3 id="aliases-title">Aliases</h3>
-        <div class="panel">
-<pre><code>test:
-  desc: Run the test suite
-  aliases:
+        <div class="node">
+<pre><code><span class="k">test</span>:
+  <span class="k">desc</span>: Run the test suite
+  <span class="k">aliases</span>:
     - t
-  execute: bundle exec rspec</code></pre>
+  <span class="k">execute</span>: bundle exec rspec</code></pre>
 <pre><code>caml t   <span class="c"># same as caml test</span></code></pre>
         </div>
         <p>Add shortcut names for a task with <code>aliases</code>.</p>
       </article>
 
-      <!-- dependencies -->
       <article class="topic" id="dependencies" aria-labelledby="dependencies-title">
         <h3 id="dependencies-title">Dependencies</h3>
-        <div class="panel">
-<pre><code>test:
-  desc: Run tests
-  execute: bundle exec rspec
+        <div class="node">
+<pre><code><span class="k">test</span>:
+  <span class="k">desc</span>: Run tests
+  <span class="k">execute</span>: bundle exec rspec
 
-lint:
-  desc: Check style
-  execute: bundle exec rubocop
+<span class="k">lint</span>:
+  <span class="k">desc</span>: Check style
+  <span class="k">execute</span>: bundle exec rubocop
 
-ci:
-  desc: Lint and test
-  needs:
+<span class="k">ci</span>:
+  <span class="k">desc</span>: Lint and test
+  <span class="k">needs</span>:
     - lint
     - test</code></pre>
 <pre><code>caml ci   <span class="c"># runs lint, then test</span></code></pre>
@@ -766,7 +602,6 @@ ci:
         </p>
       </article>
 
-      <!-- discovery -->
       <article class="topic" id="discovery" aria-labelledby="discovery-title">
         <h3 id="discovery-title">Discovery</h3>
         <p>
@@ -774,47 +609,36 @@ ci:
           <code>caml.yaml</code>, just like <code>git</code>. So you can run it from any
           subdirectory of your project.
         </p>
-        <p>
-          If no <code>caml.yaml</code> sits in the current directory or any parent, caml says
-          so and exits 1. Run <code>caml init</code> to scaffold one.
-        </p>
+        <div class="callout">
+          <p>
+            If no <code>caml.yaml</code> sits in the current directory or any parent, caml
+            says so and exits 1. Run <code>caml init</code> to scaffold one.
+          </p>
+        </div>
       </article>
 
-      <!-- built-in commands -->
       <article class="topic" id="commands" aria-labelledby="commands-title">
         <h3 id="commands-title">Built-in commands</h3>
         <div class="scroller">
           <table>
             <thead>
-              <tr>
-                <th scope="col">Command</th>
-                <th scope="col">Description</th>
-              </tr>
+              <tr><th scope="col">Command</th><th scope="col">Description</th></tr>
             </thead>
             <tbody>
-              <tr>
-                <td>caml init</td>
-                <td>Scaffold a starter <code>caml.yaml</code></td>
-              </tr>
-              <tr>
-                <td>caml --version</td>
-                <td>Print the installed version</td>
-              </tr>
-              <tr>
-                <td>caml help [cmd]</td>
-                <td>Show help for a specific task (its args and opts)</td>
-              </tr>
+              <tr><td>caml init</td><td>Scaffold a starter <code>caml.yaml</code></td></tr>
+              <tr><td>caml --version</td><td>Print the installed version</td></tr>
+              <tr><td>caml help [cmd]</td><td>Show help for a specific task (its args and opts)</td></tr>
             </tbody>
           </table>
         </div>
       </article>
-    </div>
-  </section>
+    </section>
 
+  </div>
 </main>
 
 <footer class="page-foot">
-  <div class="wrap foot-inner">
+  <div class="sheet">
     <ul class="foot-links">
       <li><a href="https://github.com/tacoda/caml">GitHub</a></li>
       <li><a href="https://rubygems.org/gems/caml">RubyGems</a></li>
@@ -826,8 +650,8 @@ ci:
 </footer>
 
 <script>
-// In-page nav without touching the URL. EMBER is a no-motion style, so the
-// jump is instant. With JS off, these stay ordinary anchors and still work.
+// In-page nav without touching the URL. LEDGER has no motion, so the jump is
+// instant. With JS off these stay ordinary anchors and still work.
 document.addEventListener('click', function (event) {
   var link = event.target.closest('a[href^="#"]');
   if (!link) return;
@@ -841,6 +665,34 @@ document.addEventListener('click', function (event) {
   if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
   target.focus({ preventScroll: true });
 });
+
+// Theme toggle. The data-theme attribute wins over prefers-color-scheme in both
+// directions; with JS off the media query alone decides.
+(function () {
+  var root = document.documentElement;
+  var button = document.getElementById('theme-toggle');
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  // The stored theme was already applied by the inline script in <head>.
+  function isDark() {
+    var set = root.getAttribute('data-theme');
+    return set ? set === 'dark' : media.matches;
+  }
+  function sync() {
+    button.setAttribute('aria-pressed', String(isDark()));
+    button.textContent = isDark() ? 'light' : 'dark';
+  }
+
+  button.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('caml-theme', next); } catch (e) {}
+    sync();
+  });
+
+  media.addEventListener('change', sync);
+  sync();
+})();
 </script>
 
 </body>
